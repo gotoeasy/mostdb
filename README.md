@@ -1,3 +1,8 @@
+<div align=center>
+<img src="https://gotoeasy.github.io/screenshots/mostdb/mostdb.png"/>
+</div>
+
+
 # MostDB
 
 `MostDB`是个分布式KV数据库，基于`goleveldb`保存数据，提供`get`、`set`、`del`http接口。<br>
