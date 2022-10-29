@@ -62,7 +62,6 @@ docker run -d -p 5379:5379 MOSTDB_SERVER_URL=http://172.27.59.53:5379 \
 
 - [x] 使用`goleveldb`保存数据，适用于节省内存资源保存大量数据的场景
 - [x] 基于过半策略的分布式集群支持，提供数据冗余性、高可靠性，配置部署极其简单
-- [x] 提供`get`、`set`、`del`等http接口，开箱即用
 - [x] 提供`http`协议的`rest`服务接口`/mostdb/set`，存操作
 - [x] 提供`http`协议的`rest`服务接口`/mostdb/get`，取操作
 - [x] 提供`http`协议的`rest`服务接口`/mostdb/del`，删操作
