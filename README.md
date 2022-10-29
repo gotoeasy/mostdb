@@ -3,6 +3,8 @@
 </div>
 
 
+## `mostdb`
+
 `mostdb`是个`golang`编写的分布式KV数据库，基于`goleveldb`保存数据，提供`get`、`set`、`del`等http接口。<br>
 分布式算法非常简单，使用过半策略，只要大部分节点成功就认为是成功，顾名思义`mostdb`
 <br>
