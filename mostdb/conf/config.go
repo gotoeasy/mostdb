@@ -21,6 +21,7 @@ var contextPath string
 var enableSecurityKey bool
 var securityKey string
 var headerSecurityKey string
+var webFramework string
 
 func init() {
 	UpdateConfigByEnv()
@@ -37,6 +38,11 @@ func UpdateConfigByEnv() {
 	enableSecurityKey = cmn.GetEnvBool("MOSTDB_API_KEY_ENABLE", false)        // web服务是否开启API秘钥校验，默认false
 	headerSecurityKey = cmn.GetEnvStr("MOSTDB_API_KEY_NAME", "X-MOSTDB-AUTH") // web服务API秘钥的header键名
 	securityKey = cmn.GetEnvStr("MOSTDB_API_KEY_VAULE", "mostdb")             // web服务API秘钥
+	webFramework = cmn.GetEnvStr("MOSTDB_WEB_GIN", "fasthttp")                // web服务框架(gin/fasthttp)
+}
+
+func GetWebFramework() string {
+	return webFramework
 }
 
 func GetServerPort() string {

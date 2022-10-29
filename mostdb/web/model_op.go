@@ -1,6 +1,11 @@
 package web
 
-import "mostdb/most"
+import (
+	"mostdb/conf"
+	"mostdb/most"
+
+	"github.com/gotoeasy/glang/cmn"
+)
 
 type OperationModel struct {
 	OpType     string                // 操作类型
@@ -32,6 +37,11 @@ func (o *OperationModel) WaitForOperationResult() *most.MostResult {
 }
 
 func (o *OperationModel) Submit() *OperationModel {
-	submitOperation(o)
+	if cmn.EqualsIngoreCase("gin", conf.GetWebFramework()) {
+		submitOperation(o)
+	} else if cmn.EqualsIngoreCase("fasthttp", conf.GetWebFramework()) {
+		submitOperationFasthttp(o)
+	}
+
 	return o
 }

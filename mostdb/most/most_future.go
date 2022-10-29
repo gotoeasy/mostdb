@@ -54,7 +54,7 @@ func (f *Futures) WaitForMostResult() {
 		go func() {
 			rs := fn()
 			if !f.done {
-				f.taskResultChan <- rs
+				f.taskResultChan <- rs // TODO 不锁可能出错
 			}
 		}()
 	}
@@ -82,9 +82,9 @@ func (f *Futures) WaitForMostResult() {
 
 		if cnt >= size {
 			if !f.done {
-				f.Result = nil        // 结果nil
-				f.done = true         // 完成
-				f.resultChan <- false // 完成
+				f.Result = MostResultNg("nil") // nil
+				f.done = true                  // 完成
+				f.resultChan <- false          // 完成
 				f.Error = errors.New("无过半一致的结果")
 			}
 			break

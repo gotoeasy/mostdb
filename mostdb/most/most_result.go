@@ -9,7 +9,7 @@ import (
 type MostResult struct {
 	Code    int     `json:"code,omitempty"`    // 编码
 	Message string  `json:"message,omitempty"` // 消息
-	Success bool    `json:"success,omitempty"` // 成功与否
+	Success bool    `json:"success"`           // 成功与否
 	Result  *KvData `json:"result,omitempty"`  // 数据
 }
 
@@ -22,6 +22,14 @@ func MostResultNg(msg string) *MostResult {
 	return &MostResult{
 		Code:    500,
 		Message: msg,
+		Success: false,
+	}
+}
+
+func MostResult404() *MostResult {
+	return &MostResult{
+		Code:    404,
+		Message: "NotFound",
 		Success: false,
 	}
 }

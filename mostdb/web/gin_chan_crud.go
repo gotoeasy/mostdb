@@ -7,40 +7,28 @@ import (
 	"github.com/gotoeasy/glang/cmn"
 )
 
-var operationChan chan *OperationModel
-
-func init() {
-	operationChan = make(chan *OperationModel, 64)
-	go func() {
-		for {
-			o := <-operationChan
-			if o.KvParam.Key == "" {
-				o.resultChan <- most.MostResultNg("参数有误")
-				continue
-			}
-
-			if o.OpType == "set" {
-				handleSetOpDataModel(o, false)
-			} else if o.OpType == "apiset" {
-				handleSetOpDataModel(o, true)
-			} else if o.OpType == "get" {
-				handleGetOpDataModel(o, false)
-			} else if o.OpType == "apiget" {
-				handleGetOpDataModel(o, true)
-			} else if o.OpType == "del" {
-				handleDelOpDataModel(o, false)
-			} else if o.OpType == "apidel" {
-				handleDelOpDataModel(o, true)
-			} else {
-				cmn.Error("不支持的操作", o.OpType)
-				o.resultChan <- most.MostResultNg("不支持的操作 " + o.OpType)
-			}
-		}
-	}()
-}
-
 func submitOperation(o *OperationModel) {
-	operationChan <- o
+	if o.KvParam.Key == "" {
+		o.resultChan <- most.MostResultNg("参数有误")
+		return
+	}
+
+	if o.OpType == "set" {
+		handleSetOpDataModel(o, false)
+	} else if o.OpType == "apiset" {
+		handleSetOpDataModel(o, true)
+	} else if o.OpType == "get" {
+		handleGetOpDataModel(o, false)
+	} else if o.OpType == "apiget" {
+		handleGetOpDataModel(o, true)
+	} else if o.OpType == "del" {
+		handleDelOpDataModel(o, false)
+	} else if o.OpType == "apidel" {
+		handleDelOpDataModel(o, true)
+	} else {
+		cmn.Error("不支持的操作", o.OpType)
+		o.resultChan <- most.MostResultNg("不支持的操作 " + o.OpType)
+	}
 }
 
 // 插入
