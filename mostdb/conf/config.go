@@ -28,15 +28,15 @@ func init() {
 
 func UpdateConfigByEnv() {
 	// 读取环境变量初始化配置，各配置都有默认值
-	storeRoot = cmn.GetEnvStr("MOSTDB_STORE_ROOT", "/opt/mostdb")                 // 存储根目录
-	serverPort = cmn.GetEnvStr("MOSTDB_SERVER_PORT", "5379")                      // web服务端口，默认“5379”
-	serverUrl = cmn.GetEnvStr("MOSTDB_SERVER_URL", "")                            // 服务URL，默认“”，集群配置时自动获取地址可能不对，可通过这个设定
-	splitUrls(cmn.GetEnvStr("MOSTDB_CLUSTER_URLS", "http://172.29.137.196:5379")) // 从服务器地址，多个时逗号分开，默认“”
-	contextPath = cmn.GetEnvStr("MOSTDB_CONTEXT_PATH", "/mostdb")                 // web服务contextPath
-	enableSecurityKey = cmn.GetEnvBool("MOSTDB_API_KEY_ENABLE", false)            // web服务是否开启API秘钥校验，默认false
-	headerSecurityKey = cmn.GetEnvStr("MOSTDB_API_KEY_NAME", "X-MOSTDB-AUTH")     // web服务API秘钥的header键名
-	securityKey = cmn.GetEnvStr("MOSTDB_API_KEY_VAULE", "mostdb")                 // web服务API秘钥
-	cmn.SetLogLevel(cmn.GetEnvStr("MOSTDB_LOG_LEVEL", "INFO"))                    // 日志级别，默认“INFO”
+	storeRoot = cmn.GetEnvStr("MOSTDB_STORE_ROOT", "/opt/mostdb")             // 存储根目录
+	serverPort = cmn.GetEnvStr("MOSTDB_SERVER_PORT", "5379")                  // web服务端口，默认“5379”
+	serverUrl = cmn.GetEnvStr("MOSTDB_SERVER_URL", "")                        // 服务URL，默认“”，集群配置时自动获取地址可能不对，可通过这个设定
+	splitUrls(cmn.GetEnvStr("MOSTDB_CLUSTER_URLS", ""))                       // 从服务器地址，多个时逗号分开，默认“”
+	contextPath = cmn.GetEnvStr("MOSTDB_CONTEXT_PATH", "/mostdb")             // web服务contextPath
+	enableSecurityKey = cmn.GetEnvBool("MOSTDB_API_KEY_ENABLE", false)        // web服务是否开启API秘钥校验，默认false
+	headerSecurityKey = cmn.GetEnvStr("MOSTDB_API_KEY_NAME", "X-MOSTDB-AUTH") // web服务API秘钥的header键名
+	securityKey = cmn.GetEnvStr("MOSTDB_API_KEY_VAULE", "mostdb")             // web服务API秘钥
+	cmn.SetLogLevel(cmn.GetEnvStr("MOSTDB_LOG_LEVEL", "INFO"))                // 日志级别，默认“INFO”
 }
 
 func GetServerPort() string {
