@@ -29,8 +29,9 @@ func FasthttpPostJson(url string, jsondata string, headers ...string) ([]byte, e
 
 	// 默认5分钟超时，因为超过5分钟通常已没啥意义
 	client := &fasthttp.Client{
-		ReadTimeout:        5 * time.Minute,
-		MaxConnWaitTimeout: 5 * time.Minute,
+		ReadTimeout:         5 * time.Minute,
+		MaxConnWaitTimeout:  5 * time.Minute,
+		MaxIdleConnDuration: 5 * time.Minute,
 	}
 	err := client.Do(req, res)
 	if err != nil {
