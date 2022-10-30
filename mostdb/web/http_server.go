@@ -30,7 +30,12 @@ func Run() {
 	cmn.Info("启动Web服务，端口", conf.GetServerPort())
 	cmn.Info("ServerUrl", conf.GetServerUrl())
 	cmn.Info("ClusterUrls", conf.GetClusterUrls())
-	err := fasthttp.ListenAndServe(fmt.Sprintf(":%s", conf.GetServerPort()), router.Handler) // :5379
+	server := &fasthttp.Server{
+		Handler:            router.Handler,
+		MaxRequestBodySize: 10 * 1024 * 1024,
+	}
+	err := server.ListenAndServe(fmt.Sprintf(":%s", conf.GetServerPort())) // :5379
+	// err := fasthttp.ListenAndServe(fmt.Sprintf(":%s", conf.GetServerPort()), router.Handler) // :5379
 	if err != nil && err != http.ErrServerClosed {
 		cmn.Fatalln("%s", err) // 启动失败的话打印错误信息后退出
 	}
