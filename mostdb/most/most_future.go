@@ -52,47 +52,45 @@ func (f *Futures) WaitForMostResult() {
 	for i := 0; i < size; i++ {
 		fn := f.tasks[i]
 		go func() {
-			rs := fn()
-			if !f.done {
-				f.taskResultChan <- rs // TODO 不锁可能出错
-			}
+			f.taskResultChan <- fn()
 		}()
 	}
 
 	// 过半确认
-	half := size / 2 // 向下取整
-	mapCnt := make(map[string](int))
-	cnt := 0
-	for {
-		rs := <-f.taskResultChan
-		cnt++
+	go func() {
+		half := size / 2 // 向下取整
+		mapCnt := make(map[string](int))
+		cnt := 0
+		for {
+			rs := <-f.taskResultChan
+			cnt++
 
-		if !f.done && rs != nil && rs.Success {
-			key := rs.Result.ToJson()
-			n := mapCnt[key]
-			n++
-			if n > half {
-				f.Result = rs        // 过半一致的结果
-				f.done = true        // 完成
-				f.resultChan <- true // 过半一致即可
+			if !f.done && rs != nil {
+				key := rs.ToJson()
+				n := mapCnt[key]
+				n++
+				if n > half {
+					f.Result = rs        // 过半一致的结果
+					f.done = true        // 完成
+					f.resultChan <- true // 过半一致即可
+				}
+				mapCnt[key] = n
+			}
+
+			if cnt >= size {
+				if !f.done {
+					f.Result = MostResultNg("NotMost") // 非过半
+					f.done = true                      // 完成
+					f.resultChan <- false              // 完成
+					f.Error = errors.New("无过半一致的结果")
+				}
+
+				defer close(f.taskResultChan)
 				break
 			}
-			mapCnt[key] = n
 		}
+	}()
 
-		if cnt >= size {
-			if !f.done {
-				f.Result = MostResultNg("nil") // nil
-				f.done = true                  // 完成
-				f.resultChan <- false          // 完成
-				f.Error = errors.New("无过半一致的结果")
-			}
-			break
-		}
-	}
-
-	defer close(f.taskResultChan)
 	defer close(f.resultChan)
-
 	<-f.resultChan
 }

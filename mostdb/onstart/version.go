@@ -1,3 +1,3 @@
 package onstart
 
-const VERSION = "mostdb 0.1.0"
+const VERSION = "mostdb 0.2.0"

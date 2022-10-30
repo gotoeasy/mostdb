@@ -1,25 +1,22 @@
 package web
 
 import (
-	"mostdb/conf"
 	"mostdb/most"
-
-	"github.com/gotoeasy/glang/cmn"
 )
 
 type OperationModel struct {
-	OpType     string                // 操作类型
-	KvParam    *most.KvData          // 请求参数
-	Result     *most.MostResult      // 处理结果
-	resultChan chan *most.MostResult // 处理结果通道
-	done       bool                  // 是否已处理完
+	OpType       string                // 操作类型
+	KvParam      *most.KvData          // 请求参数
+	Result       *most.MostResult      // 处理结果
+	opResultChan chan *most.MostResult // 处理结果通道
+	done         bool                  // 是否已处理完
 }
 
 func NewOperationModel(opType string, kvData *most.KvData) *OperationModel {
 	return &OperationModel{
-		OpType:     opType,
-		KvParam:    kvData,
-		resultChan: make(chan *most.MostResult, 1),
+		OpType:       opType,
+		KvParam:      kvData,
+		opResultChan: make(chan *most.MostResult, 1),
 	}
 }
 
@@ -28,20 +25,19 @@ func (o *OperationModel) WaitForOperationResult() *most.MostResult {
 		return o.Result
 	}
 
-	rs := <-o.resultChan
+	rs := <-o.opResultChan
+	if rs == nil {
+		rs = most.MostResultNg("NetworkErr")
+	}
+
 	o.Result = rs
 	o.done = true
 
-	defer close(o.resultChan)
+	defer close(o.opResultChan)
 	return rs
 }
 
 func (o *OperationModel) Submit() *OperationModel {
-	if cmn.EqualsIngoreCase("gin", conf.GetWebFramework()) {
-		submitOperation(o)
-	} else if cmn.EqualsIngoreCase("fasthttp", conf.GetWebFramework()) {
-		submitOperationFasthttp(o)
-	}
-
+	submitOperationFasthttp(o)
 	return o
 }

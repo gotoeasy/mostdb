@@ -8,6 +8,8 @@ import (
 
 	"github.com/gotoeasy/glang/cmn"
 	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/syndtr/goleveldb/leveldb/filter"
+	"github.com/syndtr/goleveldb/leveldb/opt"
 )
 
 // 存储结构体
@@ -67,7 +69,9 @@ func (s *DataStorage) open() error {
 		return nil
 	}
 
-	db, err := leveldb.OpenFile(s.dbPath, nil)
+	option := new(opt.Options)                    // leveldb选项
+	option.Filter = filter.NewBloomFilter(10)     // 使用布隆过滤器
+	db, err := leveldb.OpenFile(s.dbPath, option) // 打开数据库
 	if err != nil {
 		cmn.Error("打开数据库失败：", s.dbPath)
 		return err
