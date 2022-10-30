@@ -24,7 +24,6 @@ var headerSecurityKey string
 
 func init() {
 	UpdateConfigByEnv()
-	cmn.SetLogLevel("INFO") // 日志级别
 }
 
 func UpdateConfigByEnv() {
