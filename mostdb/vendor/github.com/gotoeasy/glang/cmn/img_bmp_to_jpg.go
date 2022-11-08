@@ -3,16 +3,16 @@ package cmn
 import (
 	"bytes"
 	"image/jpeg"
-	"log"
 
 	"golang.org/x/image/bmp"
 )
 
+// bmp文件转jpg文件
 func BmpToJpg(buf []byte, o *jpeg.Options) []byte {
 
 	img, err := bmp.Decode(bytes.NewReader(buf))
 	if err != nil {
-		log.Println(err)
+		Error(err)
 		return buf
 	}
 
@@ -23,7 +23,7 @@ func BmpToJpg(buf []byte, o *jpeg.Options) []byte {
 	newBuf := bytes.Buffer{}
 	err = jpeg.Encode(&newBuf, img, nil)
 	if err != nil {
-		log.Println(err)
+		Error(err)
 		return buf
 	}
 

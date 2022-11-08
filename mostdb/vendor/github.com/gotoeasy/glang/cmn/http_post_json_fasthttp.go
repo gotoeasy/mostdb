@@ -1,12 +1,12 @@
 package cmn
 
 import (
-	"strings"
 	"time"
 
 	"github.com/valyala/fasthttp"
 )
 
+// 使用Fasthttp进行Post请求，固定Content-Type:application/json;charset=UTF-8，其他自定义headers格式为 K:V
 func FasthttpPostJson(url string, jsondata string, headers ...string) ([]byte, error) {
 
 	// req := &fasthttp.Request{}
@@ -19,8 +19,8 @@ func FasthttpPostJson(url string, jsondata string, headers ...string) ([]byte, e
 	req.Header.SetMethod("POST")
 	req.Header.SetContentType("application/json;charset=UTF-8")
 	for i, max := 0, len(headers); i < max; i++ {
-		strs := strings.Split(headers[i], ":")
-		req.Header.Set(strings.TrimSpace(strs[0]), strings.TrimSpace(strs[1]))
+		strs := Split(headers[i], ":")
+		req.Header.Set(Trim(strs[0]), Trim(strs[1]))
 	}
 
 	// res := &fasthttp.Response{}
@@ -29,9 +29,8 @@ func FasthttpPostJson(url string, jsondata string, headers ...string) ([]byte, e
 
 	// 默认5分钟超时，因为超过5分钟通常已没啥意义
 	client := &fasthttp.Client{
-		ReadTimeout:         5 * time.Minute,
-		MaxConnWaitTimeout:  5 * time.Minute,
-		MaxIdleConnDuration: 5 * time.Minute,
+		ReadTimeout:        5 * time.Minute,
+		MaxConnWaitTimeout: 5 * time.Minute,
 	}
 	err := client.Do(req, res)
 	if err != nil {

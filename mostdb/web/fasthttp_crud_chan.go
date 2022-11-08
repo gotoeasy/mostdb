@@ -3,6 +3,7 @@ package web
 import (
 	"mostdb/conf"
 	"mostdb/most"
+	"path/filepath"
 
 	"github.com/gotoeasy/glang/cmn"
 )
@@ -35,7 +36,7 @@ func submitOperationFasthttp(o *OperationModel) {
 // 保存
 func handleSetOpDataModelFasthttp(o *OperationModel, isApi bool) {
 
-	db := most.NewDataStorageHandle("") // TODO 存储名管理
+	db := cmn.NewLevelDB(getDbPath(), nil) // TODO 存储名管理
 
 	future := most.NewFuture()
 	// 本机处理任务
@@ -84,7 +85,7 @@ func handleSetOpDataModelFasthttp(o *OperationModel, isApi bool) {
 // 删除
 func handleDelOpDataModelFasthttp(o *OperationModel, isApi bool) {
 
-	db := most.NewDataStorageHandle("") // TODO 存储名管理
+	db := cmn.NewLevelDB(getDbPath(), nil) // TODO 存储名管理
 
 	future := most.NewFuture()
 	// 本机处理任务
@@ -134,7 +135,7 @@ func handleDelOpDataModelFasthttp(o *OperationModel, isApi bool) {
 // 读取
 func handleGetOpDataModelFasthttp(o *OperationModel, isApi bool) {
 
-	db := most.NewDataStorageHandle("") // TODO 存储名管理
+	db := cmn.NewLevelDB(getDbPath(), nil) // TODO 存储名管理
 
 	future := most.NewFuture()
 	// 本机处理任务
@@ -183,4 +184,8 @@ func handleGetOpDataModelFasthttp(o *OperationModel, isApi bool) {
 	// 等待过半一致结果
 	future.WaitForMostResult()
 	o.opResultChan <- future.Result
+}
+
+func getDbPath() string {
+	return filepath.Join(conf.GetStorageRoot(), "store")
 }
