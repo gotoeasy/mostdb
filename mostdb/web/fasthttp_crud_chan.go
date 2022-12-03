@@ -43,7 +43,7 @@ func handleSetOpDataModelFasthttp(o *OperationModel, isApi bool) {
 	future.AddTask(func() *most.MostResult {
 		err := db.Put(cmn.StringToBytes(o.KvParam.Key), cmn.StringToBytes(o.KvParam.Value))
 		if err != nil {
-			cmn.Debug("本地调用失败", err)
+			cmn.Error("本地调用失败", err)
 			return most.MostResultNg(err.Error())
 		}
 		return most.MostResultOk()
@@ -57,7 +57,7 @@ func handleSetOpDataModelFasthttp(o *OperationModel, isApi bool) {
 			future.AddTask(func() *most.MostResult {
 				bytes, err := cmn.FasthttpPostJson(url+conf.GetContextPath()+"/api/set", kvjson)
 				if err != nil {
-					cmn.Debug("远程调用失败", err)
+					cmn.Error("远程调用失败", err)
 					return most.MostResultNg(err.Error())
 				}
 
@@ -92,7 +92,7 @@ func handleDelOpDataModelFasthttp(o *OperationModel, isApi bool) {
 	future.AddTask(func() *most.MostResult {
 		err := db.Del(cmn.StringToBytes(o.KvParam.Key))
 		if err != nil {
-			cmn.Debug("本地调用失败", err)
+			cmn.Error("本地调用失败", err)
 			return most.MostResultNg(err.Error())
 		}
 		return most.MostResultOk()
@@ -106,7 +106,7 @@ func handleDelOpDataModelFasthttp(o *OperationModel, isApi bool) {
 				future.AddTask(func() *most.MostResult {
 					bytes, err := cmn.FasthttpPostJson(url+conf.GetContextPath()+"/api/del", kvjson)
 					if err != nil {
-						cmn.Debug("远程调用失败", err)
+						cmn.Error("远程调用失败", err)
 						return most.MostResultNg(err.Error())
 					}
 
@@ -142,7 +142,7 @@ func handleGetOpDataModelFasthttp(o *OperationModel, isApi bool) {
 	future.AddTask(func() *most.MostResult {
 		bytes, err := db.Get(cmn.StringToBytes(o.KvParam.Key))
 		if err != nil || bytes == nil {
-			cmn.Debug("指定KEY找不到或值为nil", err)
+			cmn.Error("指定KEY找不到或值为nil", err)
 			return most.MostResultNg("NotFound")
 		}
 		return most.MostResultOK(&most.KvData{
@@ -159,7 +159,7 @@ func handleGetOpDataModelFasthttp(o *OperationModel, isApi bool) {
 				future.AddTask(func() *most.MostResult {
 					bytes, err := cmn.FasthttpPostJson(url+conf.GetContextPath()+"/api/get", kvjson)
 					if err != nil {
-						cmn.Debug("远程调用失败", err)
+						cmn.Error("远程调用失败", err)
 						return most.MostResultNg(err.Error())
 					}
 

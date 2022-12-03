@@ -14,12 +14,13 @@ func Run() {
 	httpserver := cmn.NewFasthttpServer()
 
 	// 增删改查
-	httpserver.HandlePost(conf.GetContextPath()+"/get", FasthttpKvGetController)
-	httpserver.HandlePost(conf.GetContextPath()+"/set", FasthttpKvSetController)
-	httpserver.HandlePost(conf.GetContextPath()+"/del", FasthttpKvDelController)
-	httpserver.HandlePost(conf.GetContextPath()+"/api/get", FasthttpKvApiGetController)
-	httpserver.HandlePost(conf.GetContextPath()+"/api/set", FasthttpKvApiSetController)
-	httpserver.HandlePost(conf.GetContextPath()+"/api/del", FasthttpKvApiDelController)
+	httpserver.
+		HandlePost(conf.GetContextPath()+"/get", FasthttpKvGetController).
+		HandlePost(conf.GetContextPath()+"/set", FasthttpKvSetController).
+		HandlePost(conf.GetContextPath()+"/del", FasthttpKvDelController).
+		HandlePost(conf.GetContextPath()+"/api/get", FasthttpKvApiGetController).
+		HandlePost(conf.GetContextPath()+"/api/set", FasthttpKvApiSetController).
+		HandlePost(conf.GetContextPath()+"/api/del", FasthttpKvApiDelController)
 
 	// 打印日志
 	cmn.Info("启动Web服务，端口", conf.GetServerPort())
