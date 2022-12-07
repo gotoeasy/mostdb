@@ -7,10 +7,14 @@ import (
 
 // Fasthttp服务器结构体
 type FasthttpServer struct {
-	router *fasthttprouter.Router
-	server *fasthttp.Server
-	port   string
+	router       *fasthttprouter.Router
+	server       *fasthttp.Server
+	port         string
+	beforeHandle GlobalBeforeRequestHandler
 }
+
+// 全局前置拦截器
+type GlobalBeforeRequestHandler func(ctx *fasthttp.RequestCtx) bool
 
 // 创建Fasthttp服务器对象
 func NewFasthttpServer() *FasthttpServer {
@@ -19,21 +23,39 @@ func NewFasthttpServer() *FasthttpServer {
 	}
 }
 
+// 注册全局前置拦截器（前置拦截器返回true时才会继续正常处理后续请求）
+func (f *FasthttpServer) BeforeRequestHandle(beforeHandle GlobalBeforeRequestHandler) *FasthttpServer {
+	f.beforeHandle = beforeHandle
+	return f
+}
+
 // 注册POST方法的请求控制器
 func (f *FasthttpServer) HandlePost(path string, handle fasthttp.RequestHandler) *FasthttpServer {
-	f.router.POST(path, handle)
+	f.router.POST(path, func(ctx *fasthttp.RequestCtx) {
+		if f.beforeHandle == nil || f.beforeHandle(ctx) {
+			handle(ctx)
+		}
+	})
 	return f
 }
 
 // 注册GET方法的请求控制器
 func (f *FasthttpServer) HandleGet(path string, handle fasthttp.RequestHandler) *FasthttpServer {
-	f.router.GET(path, handle)
+	f.router.GET(path, func(ctx *fasthttp.RequestCtx) {
+		if f.beforeHandle == nil || f.beforeHandle(ctx) {
+			handle(ctx)
+		}
+	})
 	return f
 }
 
 // 注册指定方法的请求控制器
 func (f *FasthttpServer) Handle(method string, path string, handle fasthttp.RequestHandler) *FasthttpServer {
-	f.router.Handle(method, path, handle)
+	f.router.Handle(method, path, func(ctx *fasthttp.RequestCtx) {
+		if f.beforeHandle == nil || f.beforeHandle(ctx) {
+			handle(ctx)
+		}
+	})
 	return f
 }
 

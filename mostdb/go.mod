@@ -3,7 +3,7 @@ module mostdb
 go 1.19
 
 require (
-	github.com/gotoeasy/glang v0.0.0-20221108125732-189c309e1b35
+	github.com/gotoeasy/glang v0.0.0-20221203084412-a56f61c3c4f8
 	github.com/valyala/fasthttp v1.41.0
 )
 
@@ -44,8 +44,11 @@ require (
 )
 
 require (
+	github.com/anaskhan96/soup v1.2.5 // indirect
 	github.com/buaazp/fasthttprouter v0.1.1 // indirect
+	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
+	github.com/oklog/ulid/v2 v2.1.0 // indirect
 	github.com/syndtr/goleveldb v1.0.0 // indirect
 	golang.org/x/crypto v0.1.0 // indirect
 	golang.org/x/image v0.1.0 // indirect

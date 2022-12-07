@@ -8,7 +8,7 @@ import (
 )
 
 // bmp文件转jpg文件
-func BmpToJpg(buf []byte, o *jpeg.Options) []byte {
+func ImgBmpToJpg(buf []byte, o *jpeg.Options) []byte {
 
 	img, err := bmp.Decode(bytes.NewReader(buf))
 	if err != nil {

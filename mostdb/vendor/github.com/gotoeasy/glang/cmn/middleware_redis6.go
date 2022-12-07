@@ -13,12 +13,26 @@ type Redis6Client struct {
 	rdb *redis.Client
 }
 
-// 创建Redis6客户端对象
+// 创建Redis6客户端对象（单机连接）
 func NewRedis6Client(opt *redis.Options) *Redis6Client {
 	// redis6是github.com/go-redis/redis/v8，redis7是github.com/go-redis/redis/v9
 	return &Redis6Client{
 		ctx: context.Background(),
 		rdb: redis.NewClient(opt),
+	}
+}
+
+// 创建Redis6客户端对象（哨兵模式连接）
+//
+// opt.MasterName默认为"mymaster"
+func NewRedis6ClientSentinel(opt *redis.FailoverOptions) *Redis6Client {
+	if opt.MasterName == "" {
+		opt.MasterName = "mymaster"
+	}
+
+	return &Redis6Client{
+		ctx: context.Background(),
+		rdb: redis.NewFailoverClient(opt),
 	}
 }
 

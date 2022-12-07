@@ -28,7 +28,7 @@ func (j *JWT) CreateToken(mapKv MapString, exp time.Duration) (string, error) {
 }
 
 // 续签令牌（复制原令牌后创建新令牌，原令牌可以是过期令牌）
-func (j *JWT) ExpandToken(token string, exp time.Duration) (string, error) {
+func (j *JWT) RefreshToken(token string, exp time.Duration) (string, error) {
 	m, err := j.Parse(token)
 	if err != nil {
 		return "", err

@@ -7,9 +7,18 @@ import (
 	"unsafe"
 )
 
-// 字符串(10进制无符号整数形式)转int，超过int最大值会丢失精度，转换失败时返回默认值
+// string 转 int
 func StringToInt(s string, defaultVal int) int {
 	v, err := strconv.Atoi(s)
+	if err != nil {
+		return defaultVal
+	}
+	return v
+}
+
+// string 转 float64
+func String2Float64(s string, defaultVal float64) float64 {
+	v, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		return defaultVal
 	}
@@ -62,7 +71,7 @@ func Int64ToBytes(i int64) []byte {
 
 // uint32 转 string
 func Uint32ToString(num uint32) string {
-	return BytesToString(Uint32ToBytes(num))
+	return strconv.FormatUint(uint64(num), 10)
 }
 
 // uint32 转 []byte
@@ -129,4 +138,16 @@ func BoolToString(b bool) string {
 		return "true"
 	}
 	return "false"
+}
+
+// int 转 Excel列字母 （如 1 -> A，2->B ）
+func IntToExcelColumn(iCol int) string {
+	if iCol <= 0 {
+		return ""
+	}
+	if iCol <= 26 {
+		return string(rune(iCol - 1 + 'A'))
+	}
+	iCol--
+	return string(rune(iCol/26%26-1+'A')) + string(rune(iCol%26+'A'))
 }

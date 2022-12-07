@@ -18,7 +18,9 @@ func HttpGetJson(url string, headers ...string) ([]byte, error) {
 	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
 	for i, max := 0, len(headers); i < max; i++ {
 		strs := Split(headers[i], ":")
-		req.Header.Set(Trim(strs[0]), Trim(strs[1]))
+		if len(strs) > 1 {
+			req.Header.Set(Trim(strs[0]), Trim(strs[1]))
+		}
 	}
 
 	// 读取响应内容

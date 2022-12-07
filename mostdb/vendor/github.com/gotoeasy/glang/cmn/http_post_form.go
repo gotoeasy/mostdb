@@ -25,7 +25,10 @@ func HttpPostForm(url string, formMap map[string]string, headers ...string) (str
 	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	for i, max := 0, len(headers); i < max; i++ {
 		strs := Split(headers[i], ":")
-		request.Header.Set(Trim(strs[0]), Trim(strs[1]))
+		if len(strs) > 1 {
+			request.Header.Set(Trim(strs[0]), Trim(strs[1]))
+		}
+
 	}
 
 	response, err := client.Do(request)

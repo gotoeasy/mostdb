@@ -4,6 +4,7 @@ import (
 	"mostdb/conf"
 
 	"github.com/gotoeasy/glang/cmn"
+	"github.com/valyala/fasthttp"
 )
 
 func Run() {
@@ -15,6 +16,8 @@ func Run() {
 
 	// 增删改查
 	httpserver.
+		BeforeRequestHandle(Before).
+		HandleGet(conf.GetContextPath()+"/get1", FasthttpKvGetController).
 		HandlePost(conf.GetContextPath()+"/get", FasthttpKvGetController).
 		HandlePost(conf.GetContextPath()+"/set", FasthttpKvSetController).
 		HandlePost(conf.GetContextPath()+"/del", FasthttpKvDelController).
@@ -32,4 +35,9 @@ func Run() {
 	if err != nil {
 		cmn.Fatalln("启动失败", err) // 启动失败的话打印错误信息后退出
 	}
+}
+
+func Before(c *fasthttp.RequestCtx) bool {
+	cmn.Info("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+	return true
 }

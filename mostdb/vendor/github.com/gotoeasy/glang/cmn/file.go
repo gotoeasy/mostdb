@@ -88,3 +88,17 @@ func WriteFileBytes(filename string, data []byte) error {
 	os.MkdirAll(filepath.Dir(filename), 0777)
 	return os.WriteFile(filename, data, 0666)
 }
+
+// 一次性读文件（适用于小文件）
+func ReadFileBytes(filename string) ([]byte, error) {
+	return os.ReadFile(filename)
+}
+
+// 一次性读文件（适用于小文件）
+func ReadFileString(filename string) (string, error) {
+	by, err := os.ReadFile(filename)
+	if err != nil {
+		return "", err
+	}
+	return BytesToString(by), nil
+}

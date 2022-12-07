@@ -1,15 +1,14 @@
 package cmn
 
 import (
-	"math/rand"
 	"strings"
-	"time"
 	"unicode/utf8"
 )
 
 // 按文字计算字符串长度
 func Len(str string) int {
-	return utf8.RuneCountInString(str)
+	// return utf8.RuneCountInString(str)
+	return len([]rune(str))
 }
 
 // 取左文字
@@ -48,6 +47,11 @@ func Right(str string, length int) string {
 // 去除两边空格
 func Trim(str string) string {
 	return strings.TrimSpace(str)
+}
+
+// 去除左前缀
+func TrimPrefix(str string, prefix string) string {
+	return strings.TrimPrefix(str, prefix)
 }
 
 // 判断是否空白
@@ -157,18 +161,6 @@ func Reverse(str string) string {
 		r[i], r[j] = r[j], r[i]
 	}
 	return string(r)
-}
-
-// 随机半角英数字符串
-func RandomString(length int) string {
-	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	bytes := []byte(str)
-	var result []byte
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	for i := 0; i < length; i++ {
-		result = append(result, bytes[r.Intn(len(bytes))])
-	}
-	return BytesToString(result)
 }
 
 // 字符串切割

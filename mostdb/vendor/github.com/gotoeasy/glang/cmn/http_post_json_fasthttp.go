@@ -20,7 +20,9 @@ func FasthttpPostJson(url string, jsondata string, headers ...string) ([]byte, e
 	req.Header.SetContentType("application/json;charset=UTF-8")
 	for i, max := 0, len(headers); i < max; i++ {
 		strs := Split(headers[i], ":")
-		req.Header.Set(Trim(strs[0]), Trim(strs[1]))
+		if len(strs) > 1 {
+			req.Header.Set(Trim(strs[0]), Trim(strs[1]))
+		}
 	}
 
 	// res := &fasthttp.Response{}

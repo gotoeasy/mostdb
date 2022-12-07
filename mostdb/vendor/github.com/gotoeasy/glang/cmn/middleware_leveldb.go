@@ -22,7 +22,7 @@ type LevelDB struct {
 
 // LevelDB选项
 type OptionLevelDB struct {
-	// 最大空闲时间（分钟，0~60），达空闲时间后自动关闭，小于等于0时不自动关闭，默认5分钟
+	// 最大空闲时间（分钟，0~240），达空闲时间后自动关闭，小于等于0时不自动关闭，默认15分钟，最长不超4小时
 	MaxIdleMinute int
 }
 
@@ -44,11 +44,11 @@ func NewLevelDB(dbPath string, opt *OptionLevelDB) *LevelDB {
 	}
 
 	// 开始创建客户端实例
-	maxIdleTime := int64(5 * 60) // 默认5分钟没操作则自动关闭
+	maxIdleTime := int64(15 * 60) // 默认15分钟没操作则自动关闭
 	if opt != nil {
-		// 最大空闲时间，不超60分钟
-		if opt.MaxIdleMinute > 60 {
-			maxIdleTime = int64(60 * 60)
+		// 最大空闲时间，不超240分钟
+		if opt.MaxIdleMinute > 240 {
+			maxIdleTime = int64(240 * 60)
 		} else {
 			maxIdleTime = int64(opt.MaxIdleMinute * 60)
 		}
