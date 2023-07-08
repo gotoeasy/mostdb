@@ -23,7 +23,7 @@
 ## `docker`集群部署模式简易示例
 ```shell
 # 以下3台以集群方式启动，配置本节点地址及关联节点地址即可，无中心节点，部署极其简单
-# （也可以不配置GLC_SERVER_URL，仅配置MOSTDB_CLUSTER_URLS为不含本节点的其他节点地址即可）
+# （也可以不配置MOSTDB_SERVER_URL，仅配置MOSTDB_CLUSTER_URLS为不含本节点的其他节点地址即可）
 
 # 节点1
 docker run -d -p 5379:5379 MOSTDB_SERVER_URL=http://172.27.59.51:5379 \
