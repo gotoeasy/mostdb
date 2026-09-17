@@ -65,7 +65,7 @@ curl -X POST -d '{"key":"xxx"}' 'http://172.27.59.51:5379/mostdb/get'
 - [x] `MOSTDB_STORE_ROOT`数据存储目录，默认`/opt/mostdb`
 - [x] `MOSTDB_SERVER_PORT`服务端口，默认`5379`
 - [x] `MOSTDB_SERVER_URL`本机节点服务地址，默认“”
-- [x] `MOSTDB_CLUSTER_URLS`集群节点服务地址，默认“”，默认时等同于单机方式
+- [x] `MOSTDB_CLUSTER_URLS`集群节点服务地址，多个地址使用分号分隔，默认“”，默认时等同于单机方式
 - [x] `MOSTDB_LOG_LEVEL`配置，支持级别`DEBUG/INFO/WARN/ERROR`，默认`INFO`
 
 
